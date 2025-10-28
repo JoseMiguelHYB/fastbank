@@ -30,8 +30,7 @@ public class AccountController {
 		this.accountService = accountService;
 		this.userService = userService;
 	}
-	
-	
+		
 	// Crear una cuenta nueva
 	@PostMapping
 	public ResponseEntity<AccountResponse> createAccount(@RequestBody CreateAccountRequest request) {
@@ -49,7 +48,7 @@ public class AccountController {
 	}
 	
 	
-	 // Obtener una cuenta por ID
+    // Obtener una cuenta por ID
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return accountService.getAccountById(id)
@@ -64,6 +63,5 @@ public class AccountController {
         return accountService.getAllAccounts().stream()
                 .map(AccountMapper::toResponse)
                 .collect(Collectors.toList());
-    }
-	
+    }	
 }

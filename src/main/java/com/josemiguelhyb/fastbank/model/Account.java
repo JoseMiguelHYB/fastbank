@@ -3,7 +3,8 @@ package com.josemiguelhyb.fastbank.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
+// import org.springframework.data.annotation.Id; // CUIDADO este no
+import jakarta.persistence.Id; // Este de jakarta
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

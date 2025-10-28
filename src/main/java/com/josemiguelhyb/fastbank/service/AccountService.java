@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.josemiguelhyb.fastbank.model.Account;
 
 public interface AccountService {
-	Account createAccount(Account account);
-	Optional<Account> getAccountById(Long id);
 	List<Account> getAllAccounts();
+	Optional<Account> getAccountById(Long id);
+	Account createAccount(Account account);
 }

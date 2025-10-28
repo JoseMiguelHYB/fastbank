@@ -3,6 +3,8 @@
 package com.josemiguelhyb.fastbank.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +38,10 @@ public class UserController {
 	
 	// Obetener todos los usuarios
 	@GetMapping
-	public List<User> getAllUsers() {
-		return userService.getAlllUsers();
+	public List<UserResponse> getAllUsers() {
+		return userService.getAlllUsers().stream()
+				.map(UserMapper::toResponse)
+				.collect(Collectors.toList());
 	}
 	
 	// Obtener un usuario por ID
