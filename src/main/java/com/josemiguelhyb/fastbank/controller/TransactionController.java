@@ -1,5 +1,6 @@
 package com.josemiguelhyb.fastbank.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,4 +58,34 @@ public class TransactionController {
 				.map(TransactionMapper::toResponse)
 				.collect(Collectors.toList());		
 	}
+	
+	@PostMapping("/test/concurrent-deposits")
+	public ResponseEntity<String> testConcurrentDeposits(@RequestBody CreateTransactionRequest request) {
+		int numThreads = 10; // número de hilos (simular 10 depósitos)
+		BigDecimal amountPerDeposit = request.getAmount(); // cantidad por depósito
+		Long accountId = request.getToAccountId();
+		
+		
+		// Crear y Lanzar hilos
+		List<Thread> threads = new java.util.ArrayList<>();
+		
+		for (int i = 0; i < numThreads; i++) {
+	        Thread t = new Thread(() -> {
+	            transactionService.deposit(accountId, amountPerDeposit);
+	        });
+	        threads.add(t);
+	        t.start();
+	    }
+
+	    // Esperar a que todos terminen
+	    for (Thread t : threads) {
+	        try {
+	            t.join();
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    }
+
+	    return ResponseEntity.ok("Concurrent deposits completed (" + numThreads + " threads)");
+	}	
 }
