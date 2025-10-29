@@ -27,7 +27,8 @@ public class Account {
 	
 	@Column(nullable = false)
 	private BigDecimal balance = BigDecimal.ZERO;
-		
+	
+	@Column(nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
 	
 	// Relación ManyToOne: cada cuenta pertenece a un usuario (User)
@@ -45,8 +46,7 @@ public class Account {
 		this.user = user;
 	}
 
-	// Getters y Setters
-	
+	// Getters y Setters	
 	public Long getId() {
 		return id;
 	}

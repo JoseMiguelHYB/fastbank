@@ -19,6 +19,8 @@ import com.josemiguelhyb.fastbank.model.User;
 import com.josemiguelhyb.fastbank.service.AccountService;
 import com.josemiguelhyb.fastbank.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
@@ -33,7 +35,7 @@ public class AccountController {
 		
 	// Crear una cuenta nueva
 	@PostMapping
-	public ResponseEntity<AccountResponse> createAccount(@RequestBody CreateAccountRequest request) {
+	public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody CreateAccountRequest request) {
 		User user = userService.getUserById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 		
