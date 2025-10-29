@@ -31,7 +31,6 @@ public class TransactionServiceImpl implements TransactionService {
 		Account account = accountRepository.findById(accountId)
 				.orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 		
-		
 		// 2. Actualizar el saldo de la cuenta
 		BigDecimal nuevoSaldo = account.getBalance().add(amount); // conversión explícita
 		account.setBalance(nuevoSaldo);
@@ -95,14 +94,14 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	@Transactional
 	public Transaction transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
-		// 1. Buscar las cuentas origen y destino
+		// 1. Buscar las cuentas
 		Account from = accountRepository.findById(fromAccountId)
 				.orElseThrow(() -> new RuntimeException("Cuenta origen no encontrada"));
 		
 		Account to = accountRepository.findById(toAccountId)
 				.orElseThrow(() -> new RuntimeException("Cuenta destino no encontrada"));
 		
-		// 2. Comprobar que al cuenta origen tenga saldo suficiente
+		// 2. Comprobar el saldo
 		// comparteTo devuelve: -1 si es menor, 0 si es igual, 1 si es mayor
 		if(from.getBalance().compareTo(amount) < 0) {
 			throw new RuntimeException("Saldo insuficiente");
@@ -116,16 +115,23 @@ public class TransactionServiceImpl implements TransactionService {
 		accountRepository.save(from);
 		accountRepository.save(to);
 		
-		// 5. Registrar la transacción de transaferencia
-		Transaction transaction = new Transaction();
-		transaction.setAccount(from); // dinero sale de esta cuenta
-		transaction.setAccount(to); // dienro entra en esta cuenta
-		transaction.setAmount(amount); 
-		transaction.setType(TransactionType.TRANSFER);
-		transaction.setCreatedAt(LocalDateTime.now());
+		// 5. Registrar la transacción de salida
+		Transaction outgoing = new Transaction();
+		outgoing.setAccount(from); // dinero sale de esta cuenta
+		outgoing.setAmount(amount.negate()); // opcional: poner negativo para salidas
+		outgoing.setType(TransactionType.TRANSFER);
+		outgoing.setCreatedAt(LocalDateTime.now());
+		transactionRepository.save(outgoing);
 		
-		// 6. Guardar y devolver la transacción
-		return transactionRepository.save(transaction);	
+		// 6. Registrar transacción de entrada
+		Transaction incoming = new Transaction();
+		incoming.setAccount(to);
+		incoming.setAmount(amount);
+		incoming.setType(TransactionType.TRANSFER);
+		incoming.setCreatedAt(LocalDateTime.now());		
+		transactionRepository.save(incoming);	
+		
+		return outgoing; //o incoming, según lo que quieras devolver
 	}
 
 	@Override
