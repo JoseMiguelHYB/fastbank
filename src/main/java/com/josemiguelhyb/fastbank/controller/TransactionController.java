@@ -88,4 +88,67 @@ public class TransactionController {
 
 	    return ResponseEntity.ok("Concurrent deposits completed (" + numThreads + " threads)");
 	}	
+	
+	@PostMapping("/test/concurrent-withdrawals")
+	public ResponseEntity<String> testConcurrentWithdrawals(@RequestBody CreateTransactionRequest request) {
+	    int numThreads = 10;
+	    BigDecimal amountPerWithdraw = request.getAmount();
+	    Long accountId = request.getFromAccountId();
+
+	    List<Thread> threads = new java.util.ArrayList<>();
+
+	    for (int i = 0; i < numThreads; i++) {
+	        Thread t = new Thread(() -> {
+	            try {
+	                transactionService.withdraw(accountId, amountPerWithdraw);
+	            } catch (RuntimeException e) {
+	                System.out.println("Error: " + e.getMessage());
+	            }
+	        });
+	        threads.add(t);
+	        t.start();
+	    }
+
+	    for (Thread t : threads) {
+	        try {
+	            t.join();
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    }
+
+	    return ResponseEntity.ok("Concurrent withdrawals completed (" + numThreads + " threads)");
+	}
+
+	@PostMapping("/test/concurrent-transfers")
+	public ResponseEntity<String> testConcurrentTransfers(@RequestBody CreateTransactionRequest request) {
+	    int numThreads = 10;
+	    BigDecimal amountPerTransfer = request.getAmount();
+	    Long fromAccountId = request.getFromAccountId();
+	    Long toAccountId = request.getToAccountId();
+
+	    List<Thread> threads = new java.util.ArrayList<>();
+
+	    for (int i = 0; i < numThreads; i++) {
+	        Thread t = new Thread(() -> {
+	            try {
+	                transactionService.transfer(fromAccountId, toAccountId, amountPerTransfer);
+	            } catch (RuntimeException e) {
+	                System.out.println("Error: " + e.getMessage());
+	            }
+	        });
+	        threads.add(t);
+	        t.start();
+	    }
+
+	    for (Thread t : threads) {
+	        try {
+	            t.join();
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    }
+
+	    return ResponseEntity.ok("Concurrent transfers completed (" + numThreads + " threads)");
+	}	
 }
