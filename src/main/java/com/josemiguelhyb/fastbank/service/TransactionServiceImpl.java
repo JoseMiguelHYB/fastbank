@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class TransactionServiceImpl implements TransactionService {
 	@Transactional
 	public Transaction deposit(Long accountId, BigDecimal amount) {
 		
+		// Logger profesional con SLF4J
+		final Logger logger = LoggerFactory.getLogger(TransactionService.class);
+				
 		// Inicio medición de tiempo (AGREGADO)
 		long start = System.nanoTime();
 		
@@ -54,7 +59,8 @@ public class TransactionServiceImpl implements TransactionService {
 			// Fin medición de tiempo (AGREGADO)
 			long end = System.nanoTime();
 			double elapsedMs = (end - start) / 1_000_000.0;
-			System.out.println("⏱ DEPÓSITO ejecutado en: " + elapsedMs + " ms");
+			//System.out.println("⏱ DEPÓSITO ejecutado en: " + elapsedMs + " ms");
+	        logger.info("⏱ DEPÓSITO ejecutado en: {} ms", elapsedMs);
 		}	
 	}
 	
