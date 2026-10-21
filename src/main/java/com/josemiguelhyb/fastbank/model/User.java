@@ -1,35 +1,35 @@
 // MODELO  -> Son las entidades JPA lo que va a representar la tabla en la BD.
-package com.josemiguelhyb.fastbank.model;
+paquete com.josemiguelhyb.fastbank.model; com.josemiguelhyb.fastbank.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+Importarónón  jakarta.persistencia. Columna; jakarta.persistence.Column;jakarta.persistencia. Columna; jakarta.persistence.Column;
+Importarónón  jakarta.persistencia. Entidad; jakarta.persistence.Entity;jakarta.persistencia. Entidad; jakarta.persistence.Entity;
+Importarónón  jakarta.persistencia. Valor generado; jakarta.persistence.GeneratedValue;jakarta.persistencia. Valor generado; jakarta.persistence.GeneratedValue;
+Importarónón  jakarta.persistencia. Tipo  Yakarta persistenciaón; jakarta.persistence.GenerationType;
+Importarónón  jakarta.persistencia. Id; jakarta.persistence.Id;
+Importarónón  jakarta.persistencia. Mesa; jakarta.persistence.Table;
 
-@Entity
-@Table(name = "users")
-public class User {
+@entity
+@table ( nombre =   "usuarios")(nombre =  "users")
+usuarioúblicoúblico de clase pública  blica  { clase User {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@id 
+@GeneratedValue (estrategia = GenerationType. Identidad) (Estrategia =  GenerationType. Identidad.GenerationType.IDENTITY)
+Largo id   privado;    id privado; private Long id;
 	
-	@Column(nullable = false)
-	private String name;
+@column (nulable = falso) (nula = false)
+nombre de cuerda privado;  de cuerda  privado;  private String name;
 	
-	@Column(unique = true, nullable= false)
-	private String email;
+@column (único = verdadero, nula = falso) (único =  true, nulable= false)
+correo electrónico privado de String;  electrónico privado de String; private String email;
 	
-	@Column(nullable = false)
-	private String password;
+@column (nulable = falso) (nula = false)
+contraseña privada de String; ña privada de String; private String password;
 	
-	// Constructor vacío (obligatorio para JPA)
-	public User() {
-	}
+	// Constructor vacío (obligatorio para JPA) // Constructor vacío (obligatorio para JPA)
+Usuario público () {  público () { public User() {
+} }
 
-	public User(String name, String email, String password) {
+	públicoúblico  UserUser(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -59,9 +59,9 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
+paquete
 
-	public String getPassword() {
+@id 
 		return password;
 	}
 
